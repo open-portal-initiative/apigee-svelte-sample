@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+  <Description/>
+  <FaultRules>
+    <FaultRule name="SetCors">
+      <Step>
+        <Name>AM-SetCors</Name>
+      </Step>
+    </FaultRule>
+  </FaultRules>
+  <PreFlow name="PreFlow">
+    <Request>
+    </Request>
+    <Response/>
+  </PreFlow>
+  <PostFlow name="PostFlow">
+    <Request/>
+    <Response>
+      <Step>
+        <Name>AM-SetCors</Name>
+      </Step>
+    </Response>
+  </PostFlow>
+  <Flows>
+    <Flow name="Get">
+      <Description/>
+      <Request>
+        <Step>
+          <Name>VA-VerifyKey</Name>
+        </Step>
+        <Step>
+          <Name>AM-RemoveKey</Name>
+        </Step>
+        <Step>
+          <Name>EV-ExtractName</Name>
+        </Step>
+      </Request>
+      <Response>
+        <Step>
+          <Name>KVM-GetData</Name>
+        </Step>
+        <Step>
+          <Name>JS-SetRecord</Name>
+        </Step>
+        <Step>
+          <Name>AM-SetResponse</Name>
+          <Condition>data.mock != "" and data.mock != null</Condition>
+        </Step>
+      </Response>
+      <Condition>request.verb = "GET"</Condition>
+    </Flow>
+    <Flow name="Post">
+      <Description/>
+      <Request>
+        <Step>
+          <Name>VA-VerifyKey</Name>
+        </Step>
+        <Step>
+          <Name>AM-RemoveKey</Name>
+        </Step>
+      </Request>
+      <Response>
+        <Step>
+          <Name>AM-SetMock</Name>
+        </Step>
+        <Step>
+          <Name>AM-SetResponse</Name>
+        </Step>
+      </Response>
+      <Condition>request.verb = "POST"</Condition>
+    </Flow>
+    <Flow name="Delete">
+      <Description/>
+      <Request>
+        <Step>
+          <Name>VA-VerifyKey</Name>
+        </Step>
+        <Step>
+          <Name>AM-RemoveKey</Name>
+        </Step>
+        <Step>
+          <Name>EV-ExtractName</Name>
+        </Step>
+      </Request>
+      <Response>
+        <Step>
+          <Name>KVM-GetData</Name>
+        </Step>
+        <Step>
+          <Name>JS-SetRecord</Name>
+        </Step>
+        <Step>
+          <Name>AM-SetResponse</Name>
+        </Step>
+      </Response>
+      <Condition>request.verb = "DELETE"</Condition>
+    </Flow>
+    <Flow name="Put">
+      <Description/>
+      <Request>
+        <Step>
+          <Name>VA-VerifyKey</Name>
+        </Step>
+        <Step>
+          <Name>AM-RemoveKey</Name>
+        </Step>
+        <Step>
+          <Name>EV-ExtractName</Name>
+        </Step>
+      </Request>
+      <Response>
+        <Step>
+          <Name>AM-SetMock</Name>
+        </Step>
+        <Step>
+          <Name>AM-SetResponse</Name>
+        </Step>
+      </Response>
+      <Condition>request.verb = "PUT"</Condition>
+    </Flow>
+  </Flows>
+  <HTTPProxyConnection>
+    <BasePath>/v1/mock</BasePath>
+    <Properties/>
+  </HTTPProxyConnection>
+  <RouteRule name="default"/>
+</ProxyEndpoint>

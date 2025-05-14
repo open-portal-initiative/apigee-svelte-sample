@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+  <Description/>
+  <FaultRules/>
+  <PreFlow name="PreFlow">
+    <Request>
+      <Step>
+        <Name>RF-ReturnCors</Name>
+        <Condition>request.verb = "OPTIONS"</Condition>
+      </Step>
+      <Step>
+        <Name>VA-VerifyKey</Name>
+      </Step>
+      <Step>
+        <Name>AM-RemoveKey</Name>
+      </Step>
+      <Step>
+        <Name>EV-GetInputs</Name>
+      </Step>
+      <Step>
+        <Name>SC-ModelArmor</Name>
+      </Step>
+      <Step>
+        <Name>EV-ModelArmor</Name>
+      </Step>
+      <Step>
+        <Name>AM-SetSystemPrompt</Name>
+      </Step>
+      <Step>
+        <Name>KVM-GetSystemPrompt</Name>
+      </Step>
+      <Step>
+        <Condition>(genai.prompt == null) or (genai.maerror != null)</Condition>
+        <Name>RF-ValidateInputs</Name>
+      </Step>
+      <Step>
+        <Condition>genai.techmodel == null</Condition>
+        <Name>AM-SetDefaultModel</Name>
+      </Step>
+      <Step>
+        <Name>RC-CheckCache</Name>
+        <Condition>(genai.model = "gemini") or (genai.model = "llama") or (genai.model = "mistral")</Condition>
+      </Step>
+    </Request>
+    <Response/>
+  </PreFlow>
+  <PostFlow name="PostFlow">
+    <Request/>
+    <Response>
+      <Step>
+        <Name>AM-SetCors</Name>
+      </Step>
+      <Step>
+        <Name>DC-TokenCounts</Name>
+      </Step>
+      <Step>
+        <Name>RC-CheckCache</Name>
+      </Step>
+    </Response>
+  </PostFlow>
+  <Flows>
+  </Flows>
+  <HTTPProxyConnection>
+    <BasePath>/v1/genai</BasePath>
+    <Properties/>
+    <VirtualHost>default</VirtualHost>
+  </HTTPProxyConnection>
+  <RouteRule name="mistral">
+    <Condition>proxy.pathsuffix MatchesPath "/mistral"</Condition>
+    <TargetEndpoint>Mistral</TargetEndpoint>
+  </RouteRule>
+  <RouteRule name="gemini">
+    <TargetEndpoint>Gemini Llama</TargetEndpoint>
+  </RouteRule>
+</ProxyEndpoint>

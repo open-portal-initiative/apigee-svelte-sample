@@ -1,0 +1,26 @@
+<APIProxy revision="11" name="MP-MockData-v1">
+    <DisplayName></DisplayName>
+    <Description></Description>
+    <CreatedAt>1741448125956</CreatedAt>
+    <LastModifiedAt>1741448125956</LastModifiedAt>
+    <BasePaths>/v1/mock</BasePaths>
+    <Policies>
+        <Policy>AM-RemoveKey</Policy>
+        <Policy>AM-SetCors</Policy>
+        <Policy>AM-SetResponse</Policy>
+        <Policy>EV-ExtractName</Policy>
+        <Policy>JS-SetData</Policy>
+        <Policy>JS-SetRecord</Policy>
+        <Policy>KVM-GetData</Policy>
+        <Policy>KVM-UpdateData</Policy>
+        <Policy>VA-VerifyKey</Policy>
+        <Policy>AM-SetMock</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+    <Resources>
+        <Resource>jsc://datafunctions.js</Resource>
+        <Resource>jsc://singleupdate.js</Resource>
+    </Resources>
+</APIProxy>
